@@ -44,7 +44,7 @@ proxyAddress = https://1813ae76.ngrok.io  ///////////proxy address from ngrok///
 
 ````
 
-Start the app using ``` npm run main.js```
+Start the app using ``` node main.js```
 
 # Usage
 Three routes are exposed in the api 
