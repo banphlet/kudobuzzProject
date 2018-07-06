@@ -48,10 +48,12 @@ Router.get('/shopify-callback', (req, res)=>{
     const { shop, hmac, code, state } = req.query;
     if(!shop || !hmac || !code || !state) return res.json({Error: 'Required parameters not provided'})
 
+
     const map = Object.assign({}, req.query);
     delete map['signature'];
     delete map['hmac'];
     const message = querystring.stringify(map);
+
     const providedHmac = Buffer.from(hmac, 'utf-8');
     const generatedHash = Buffer.from(
     crypto
@@ -64,10 +66,10 @@ Router.get('/shopify-callback', (req, res)=>{
   let hashEquals = crypto.timingSafeEqual(generatedHash, providedHmac)
 
 
-if (!hashEquals) {
-  return res.status(400).send('HMAC validation failed');
-}
 
+if (!hashEquals) {
+  return res.status(400).json('HMAC validation failed');
+}
 
 const accessTokenUrl =  process.env.merchantUrl + '/oauth/access_token';
 const payLoad = {
@@ -78,10 +80,11 @@ const payLoad = {
 
   
   request.post(accessTokenUrl, { json: payLoad },(error, r, accessBody)=>{
+     
     if(error){
-       return res.status(error.statusCode).send(error);
+       return res.status(error.statusCode).json(error);
     }
-
+    
     if(accessBody.error) return res.json(accessBody)
     const accessToken = accessBody.access_token
 
@@ -94,8 +97,9 @@ request.get(`${process.env.merchantUrl}/products.json?access_token=${accessToken
 
 
      res.json(productBody)
-
 })
+
+
   })
 
 
