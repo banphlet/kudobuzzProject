@@ -1,4 +1,7 @@
 # Setup
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/banphlet/kudobuzzProject.svg)](https://greenkeeper.io/)
+
   ## Clone Project
 
 ```sh
